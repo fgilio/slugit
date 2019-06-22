@@ -2,6 +2,10 @@
     "name": "slugit",
     "version": 2,
     "alias": "slugit.dev",
+    "builds": [
+        { "src": "index.html", "use": "@now/static" },
+        { "src": "api/index.js", "use": "@now/node" }
+    ],
     "routes": [
         { "src": "/android-chrome-192x192.png" },
         { "src": "/android-chrome-512x512.png" },
@@ -18,6 +22,7 @@
         { "src": "/now.json" },
         { "src": "/safari-pinned-tab.svg" },
         { "src": "/manifest.webmanifest" },
+        { "src": "/api/(.*)", "dest": "/api/index.js" },
         {
             "src": "/(.*)",
             "dest": "/"
