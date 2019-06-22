@@ -113,7 +113,7 @@
              * So we use decodeURI to get the decoded string.
              * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI
              */
-            const explanation = 'Use it like this:\n\r \`' + window.location.href + 'bla ble bli`';
+            const explanation = 'Use it like this:\n\r \`' + window.location.href + 'give me a slug`';
             const path = decodeURI(window.location.pathname);
             const pathSlug = slugify(path) || explanation;
 
