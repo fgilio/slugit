@@ -118,6 +118,7 @@
             const pathSlug = slugify(path) || explanation;
 
             document.querySelector('h1').textContent = pathSlug;
+            document.querySelector('title').textContent = pathSlug + '  - slugit';
             document.addEventListener('click', () => copyToClipboard(pathSlug));
         </script>
     </body>
