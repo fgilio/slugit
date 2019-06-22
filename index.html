@@ -22,17 +22,24 @@
             document.querySelector('h1').textContent = slug;
             document.addEventListener('click', () => copyToClipboard(slug));
 
-            function slugify(text) {
-                return text
+            /*
+             * From https://medium.com/@mhagemann/the-ultimate-way-to-slugify-a-url-string-in-javascript-b8e4a0d849e1
+             */
+            const slugify = string => {
+                const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
+                const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
+                const p = new RegExp(a.split('').join('|'), 'g');
+                return string
                     .toString()
                     .toLowerCase()
-                    .replace(/%20/g, ' ') // Replace `%20` with a space
                     .replace(/\s+/g, '-') // Replace spaces with -
-                    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                    .replace(p, c => b.charAt(a.indexOf(c))) // Replace special characters
+                    .replace(/&/g, '-and-') // Replace & with ‘and’
+                    .replace(/[^\w\-]+/g, '') // Remove all non-word characters
                     .replace(/\-\-+/g, '-') // Replace multiple - with single -
                     .replace(/^-+/, '') // Trim - from start of text
                     .replace(/-+$/, ''); // Trim - from end of text
-            }
+            };
             const copyToClipboard = str => {
                 const el = document.createElement('textarea');
                 el.value = str;
