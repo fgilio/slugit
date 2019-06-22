@@ -3,7 +3,7 @@
     "version": 2,
     "alias": "slugit.dev",
     "builds": [
-        { "src": "*", "use": "@now/static" },
+        { "src": "/api/", "use": "@now/static" },
         { "src": "api/index.js", "use": "@now/node" }
     ],
     "routes": [

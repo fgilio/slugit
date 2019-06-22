@@ -1,5 +1,3 @@
-const url = require('url');
-
 const slugify = string => {
     const a = 'àáäâãåăæçèéëêǵḧìíïîḿńǹñòóöôœøṕŕßśșțùúüûǘẃẍÿź·/_,:;';
     const b = 'aaaaaaaaceeeeghiiiimnnnooooooprssstuuuuuwxyz------';
@@ -17,5 +15,13 @@ const slugify = string => {
 };
 
 module.exports = async (req, res) => {
-    return res.end(slugify(decodeURI(url.parse(req.url).pathname).replace('/api/', '')));
+    if (!req.query.input && !req.body.input) {
+        return res.status(422).send({
+            message: 'Send your input string in a parameter named `input`',
+        });
+    }
+
+    return res.status(200).send({
+        output: slugify(req.query.input || req.body.input),
+    });
 };
