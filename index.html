@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+
+        <title>slugit</title>
+
+
+    </head>
+
+    <body style="display:flex;justify-content:center;align-items:center;height:100vh;background-color: #f4f4f5;">
+        <h1
+            style="font-size: 32px !important; line-height: 32.5px !important;font-family: monospace;color: #495254;-webkit-user-select: all;-moz-user-select: all;user-select: all;"
+        ></h1>
+        <script>
+            const path = window.location.pathname;
+            const slug = slugify(path);
+            // document.write(path);
+            document.querySelector('h1').textContent = slug;
+            document.addEventListener('click', () => copyToClipboard(slug));
+
+            function slugify(text) {
+                return text
+                    .toString()
+                    .toLowerCase()
+                    .replace(/%20/g, ' ') // Replace `%20` with a space
+                    .replace(/\s+/g, '-') // Replace spaces with -
+                    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+                    .replace(/^-+/, '') // Trim - from start of text
+                    .replace(/-+$/, ''); // Trim - from end of text
+            }
+            const copyToClipboard = str => {
+                const el = document.createElement('textarea');
+                el.value = str;
+                el.setAttribute('readonly', '');
+                el.style.position = 'absolute';
+                el.style.left = '-9999px';
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+            };
+        </script>
+    </body>
+</html>
