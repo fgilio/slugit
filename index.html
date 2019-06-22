@@ -30,8 +30,12 @@
     </head>
 
     <body>
-        <h1></h1>
+        <h1 title="Click to copy to clipboard"></h1>
+
         <style>
+            html {
+                box-sizing: border-box;
+            }
             body {
                 display: flex;
                 justify-content: center;
@@ -40,15 +44,39 @@
                 background-color: #f4f4f5;
                 padding: 0;
                 margin: 0;
+                -webkit-font-smoothing: antialiased !important;
+                -moz-osx-font-smoothing: grayscale !important;
             }
             h1 {
-                font-size: 32px !important;
-                line-height: 32.5px !important;
+                font-size: 32px;
+                line-height: 1.45;
                 font-family: monospace;
+                text-align: center;
                 color: #495254;
                 -webkit-user-select: all;
                 -moz-user-select: all;
                 user-select: all;
+                border-radius: 3px;
+                transition: all 100ms ease-out;
+                padding: 10px;
+                margin: 10px;
+                cursor: url('/_ionicons_svg_md-copy.png'), auto;
+            }
+            h1:hover {
+                /* border: calc(1em / 40) solid hsl(191, 7%, 31%, 0.5); */
+                background-color: hsl(191, 7%, 31%, 0.1);
+                transition: all 100ms ease-in;
+            }
+            h1:active {
+                /* border: calc(1em / 40) solid hsl(191, 7%, 31%, 0.5); */
+                background-color: hsl(191, 7%, 31%, 0.3);
+                transition: all 10ms ease-in;
+                color: white;
+                background-color: #4a4972;
+            }
+            ::selection {
+                /* color: white; */
+                background-color: transparent;
             }
         </style>
         <script>
