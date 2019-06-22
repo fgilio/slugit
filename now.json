@@ -3,10 +3,11 @@
     "version": 2,
     "alias": "slugit.dev",
     "builds": [
-        { "src": "index.html", "use": "@now/static" },
+        { "src": "*", "use": "@now/static" },
         { "src": "api/index.js", "use": "@now/node" }
     ],
     "routes": [
+        { "src": "/_ionicons_svg_md-copy.png" },
         { "src": "/android-chrome-192x192.png" },
         { "src": "/android-chrome-512x512.png" },
         { "src": "/apple-touch-icon.png" },
