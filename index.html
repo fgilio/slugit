@@ -16,12 +16,6 @@
             style="font-size: 32px !important; line-height: 32.5px !important;font-family: monospace;color: #495254;-webkit-user-select: all;-moz-user-select: all;user-select: all;"
         ></h1>
         <script>
-            const path = window.location.pathname;
-            const slug = slugify(path);
-            // document.write(path);
-            document.querySelector('h1').textContent = slug;
-            document.addEventListener('click', () => copyToClipboard(slug));
-
             /*
              * From https://medium.com/@mhagemann/the-ultimate-way-to-slugify-a-url-string-in-javascript-b8e4a0d849e1
              */
@@ -51,6 +45,18 @@
                 document.execCommand('copy');
                 document.body.removeChild(el);
             };
+
+            /*
+             * We receive the path as an URL encoded string.
+             * Which means an `á` will be represented as `%C3%A1`.
+             * So we use decodeURI to get the decoded string.
+             * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/decodeURI
+             */
+            const path = decodeURI(window.location.pathname);
+            const pathSlug = slugify(path);
+
+            document.querySelector('h1').textContent = pathSlug;
+            document.addEventListener('click', () => copyToClipboard(pathSlug));
         </script>
     </body>
 </html>
