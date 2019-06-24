@@ -3,7 +3,7 @@
     "version": 2,
     "alias": "slugit.dev",
     "builds": [
-        { "src": "/api/", "use": "@now/static" },
+        { "src": "*", "use": "@now/static" },
         { "src": "api/index.js", "use": "@now/node" }
     ],
     "routes": [
@@ -23,6 +23,7 @@
         { "src": "/now.json" },
         { "src": "/safari-pinned-tab.svg" },
         { "src": "/manifest.webmanifest" },
+        { "src": "/service-worker.js" },
         { "src": "/api/(.*)", "dest": "/api/index.js" },
         {
             "src": "/(.*)",
