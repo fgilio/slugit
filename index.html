@@ -95,9 +95,9 @@
                     .replace(/^-+/, '') // Trim - from start of text
                     .replace(/-+$/, ''); // Trim - from end of text
             };
-            const copyToClipboard = str => {
+            const copyToClipboard = string => {
                 const el = document.createElement('textarea');
-                el.value = str;
+                el.value = string;
                 el.setAttribute('readonly', '');
                 el.style.position = 'absolute';
                 el.style.left = '-9999px';
