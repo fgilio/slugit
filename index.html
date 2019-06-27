@@ -2,12 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
         <link rel="manifest" href="/manifest.webmanifest" />
-
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="slugit" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
@@ -15,6 +18,7 @@
         <meta name="theme-color" content="#4A4972" />
 
         <title>slugit</title>
+        <meta name="description" content="slugit is a handy URL based slug generator" />
 
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="slugit" />
@@ -30,7 +34,11 @@
     </head>
 
     <body>
-        <h1 title="Click to copy to clipboard"></h1>
+        <main>
+            <p></p>
+            <input type="text" />
+            <h1 title="Click to copy to clipboard"></h1>
+        </main>
 
         <style>
             html {
@@ -38,7 +46,6 @@
             }
             body {
                 display: flex;
-                justify-content: center;
                 align-items: center;
                 height: 100vh;
                 background-color: #f4f4f5;
@@ -47,20 +54,61 @@
                 -webkit-font-smoothing: antialiased !important;
                 -moz-osx-font-smoothing: grayscale !important;
             }
-            h1 {
-                font-size: 32px;
+            main {
+                width: 100%;
+                margin: 0 20px;
+            }
+            p {
+                font-size: 15.75px;
                 line-height: 1.45;
                 font-family: monospace;
-                text-align: center;
+                text-align: left;
+                color: #495254;
+                padding: 3px 12px;
+                margin: 0;
+                width: 90%;
+            }
+            input {
+                font-size: 20px;
+                line-height: 1.45;
+                font-family: monospace;
+                color: #495254;
+                border-radius: 3px;
+                border-style: hidden;
+                padding: 3px 12px;
+                margin: 30px 0 10px 0;
+                width: 90%;
+            }
+            input:focus {
+                box-shadow: 0 0 1px rgba(74, 73, 114, 0.26) inset, 0 0 8px rgba(74, 73, 114, 0.1);
+                outline: 0 none;
+            }
+            h1 {
+                position: relative;
+                display: inline-block;
+                font-size: 30px;
+                line-height: 1.45;
+                font-family: monospace;
                 color: #495254;
                 -webkit-user-select: all;
                 -moz-user-select: all;
                 user-select: all;
                 border-radius: 3px;
                 transition: all 70ms ease-out;
-                padding: 10px;
-                margin: 10px;
-                cursor: url('/_ionicons_svg_md-copy.png'), auto;
+                padding: 10px 40px 10px 10px;
+                margin: 0;
+            }
+            h1:after {
+                display: block;
+                height: 30px;
+                width: 30px;
+                position: absolute;
+                top: 50%;
+                right: 5px;
+                transform: translateY(-50%);
+                content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 128 128' style='enable-background:new 0 0 128 128;' xml:space='preserve'%3E%3Cpath d='M73.5,14.5H45.1c-5.3,0-9.6,4.1-9.6,9.4v2h-1.8c-5.3,0-9.6,4.1-9.6,9.4v68.6c0,5.3,4.4,9.6,9.6,9.6h49.5 c5.3,0,9.4-4.4,9.4-9.6v-1.8h2c5.3,0,9.4-4.4,9.4-9.6V45L73.5,14.5z M73.5,25.1L93.4,45H73.5V25.1z M85,103.9c0,1.1-0.8,2-1.8,2 H33.6c-1,0-2-1-2-2V35.3c0-1,0.9-1.8,2-1.8h1.8v60.8c0,5.3,2.5,7.7,7.7,7.7H85V103.9z M96.4,92.5c0,1.1-0.8,2-1.8,2H45.1 c-1,0-2-1-2-2V23.9c0-1,0.9-1.8,2-1.8h20.8v30.5h30.5V92.5z'/%3E%3C/svg%3E%0A");
+                opacity: 0.5;
+                transition: all 70ms ease-out;
             }
             h1:hover {
                 background-color: hsl(191, 7%, 31%, 0.1);
@@ -72,7 +120,12 @@
                 color: white;
                 background-color: #4a4972;
             }
-            ::selection {
+            h1:active:after {
+                transition: all 10ms ease-in;
+                filter: invert(1);
+                opacity: 1;
+            }
+            h1::selection {
                 background-color: transparent;
             }
         </style>
@@ -206,22 +259,37 @@
                 }
             };
 
+            const displaySlug = string => {
+                let pathSlug = '';
+                try {
+                    pathSlug = slugify(string) || '...';
+                } catch (err) {
+                    pathSlug = 'derp';
+                    console.error('Parameter `url` must contain valid UTF-8 character sequences');
+                }
+                document.querySelector('h1').textContent = pathSlug;
+                document.querySelector('title').textContent = pathSlug + '  - slugit';
+            };
             /*
              * We receive the path as an URL encoded string.
              * Which means an `á` will be represented as `%C3%A1`.
              * So we use decodePath to get the decoded string.
              */
-            const explanation = 'Use it like this:\n\r \`' + window.location.href + 'give me a slug`';
-            // try {
-                const path = decodePath(window.location.pathname);
-                const pathSlug = slugify(path) || explanation;
-            // } catch (err) {
-            //     throw new Error('Parameter `url` must contain valid UTF-8 character sequences');
-            // }
+            if (window.location.pathname === '/') {
+                document.querySelector('p').innerHTML = `Use it like this:<br><a href="${
+                    window.location.origin
+                }/give me a slug">${window.location.origin}/give me a slug`;
+            }
+            const defaultt = '...or write here';
+            const path = decodePath(window.location.pathname);
+            displaySlug(path !== '/' ? path : defaultt);
 
-            document.querySelector('h1').textContent = pathSlug;
-            document.querySelector('title').textContent = pathSlug + '  - slugit';
-            document.addEventListener('click', () => copyToClipboard(pathSlug));
+            document.querySelector('input').value = path.slice(1) || defaultt;
+            document.querySelector('input').addEventListener('keyup', event => {
+                displaySlug(event.target.value);
+            });
+
+            document.querySelector('h1').addEventListener('click', e => copyToClipboard(e.target.textContent));
         </script>
 
         <script>
