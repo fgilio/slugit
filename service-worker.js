@@ -1,9 +1,8 @@
-// we'll version our cache (and learn how to delete caches in some other post)
-const cacheName = 'v1::static';
-// const cacheName = 'v1::static';
-const assetsToCache = [
+// We need this to version the cache
+const staticAssetsCacheName = 'static::v3';
+// These are all the assets we'll cache
+const staticAssets = [
     '/',
-    '/_ionicons_svg_md-copy.png',
     // Should these be cached?
     '/android-chrome-192x192.png',
     '/android-chrome-512x512.png',
@@ -21,19 +20,49 @@ const assetsToCache = [
     '/manifest.webmanifest',
 ];
 
-self.addEventListener('install', e => {
-    // once the SW is installed, go ahead and fetch the resources
-    // to make this work offline
-    e.waitUntil(
-        caches.open(cacheName).then(cache => {
-            return cache.addAll(assetsToCache).then(() => self.skipWaiting());
+/*
+ * First the Service Worker needs to be installed
+ */
+self.addEventListener('install', event => {
+    console.log('Service Worker install');
+    event.waitUntil(cacheResources());
+});
+async function cacheResources() {
+    const cache = await caches.open(staticAssetsCacheName);
+    await cache.addAll(staticAssets);
+    return self.skipWaiting();
+}
+
+/*
+ * Then it's activated, this normally happens when the page is refreshed
+ */
+self.addEventListener('activate', event => {
+    console.log('Service Worker activate');
+    // Remove previous cached data, if any
+    event.waitUntil(removeOldCachedResources());
+});
+async function removeOldCachedResources() {
+    const cachesKeys = await caches.keys();
+    return await Promise.all(
+        cachesKeys.map(cacheKey => {
+            if (staticAssetsCacheName !== cacheKey) {
+                return caches.delete(cacheKey);
+            }
         })
     );
-});
+}
 
-// when the browser fetches a url, either response with
-// the cached object or go ahead and fetch the actual url
+/*
+ * This even fires each time the browser makes a request.
+ * We can responde from the cache, construct a response
+ * from scratch or fallback to the network
+ */
 self.addEventListener('fetch', event => {
-    const request = event.request.mode === 'navigate' ? new Request('/') : event.request;
-    event.respondWith(caches.match(request).then(cachedResponse => cachedResponse || fetch(request)));
+    console.log('Service Worker fetch: ' + event.request.url);
+    event.respondWith(returnCachedResponseOrFetch(event));
 });
+async function returnCachedResponseOrFetch(event) {
+    const request = event.request.mode === 'navigate' ? new Request('/') : event.request;
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || fetch(request);
+}
