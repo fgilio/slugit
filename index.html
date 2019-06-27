@@ -318,13 +318,14 @@
              * Which means an `á` will be represented as `%C3%A1`.
              * So we use decodePath to get the decoded string.
              */
-            if (window.location.pathname === '/') {
+            const pathname = window.location.href.replace(window.location.origin, '');
+            if (pathname === '/') {
                 document.querySelector('p').innerHTML = `Use it like this:<br><a href="${
                     window.location.origin
                 }/give me a slug">${window.location.origin}/give me a slug`;
             }
             const defaultt = '...or write here';
-            const path = decodePath(window.location.pathname);
+            const path = decodePath(pathname);
             displaySlug(path !== '/' ? path : defaultt);
 
             document.querySelector('input').value = path.slice(1) || defaultt;

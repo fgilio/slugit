@@ -1,5 +1,5 @@
 // We need this to version the cache
-const staticAssetsCacheName = 'static::v4';
+const staticAssetsCacheName = 'static::v5';
 // These are all the assets we'll cache
 const staticAssets = [
     '/',
