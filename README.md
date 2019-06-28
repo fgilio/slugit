@@ -8,7 +8,7 @@ Seriously, try it out: [https://slugit.dev/try it out](https://slugit.dev/try%20
 ## Why
 1. It's a simple tool I frequently needed when creating branch names from an issue's title.  
 For example, imagine you have the following issue `Make slugit work offline`, then it's branch name would be `make-slugit-work-offline`.
-2. I also needed a really simple project to learn how a Service Worker functions, so slugit actually does work offline.
+2. I also needed a really simple project to learn how a Service Worker functions, so slugit is a PWA ([PWA resources list](https://gist.github.com/fgilio/2d13bfb6cd94bf0affd7f79e87ae2e94)) that actually does work offline.
 
 
 ## Usage
