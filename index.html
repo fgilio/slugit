@@ -330,7 +330,7 @@
             displaySlug(path !== '/' ? path : defaultt);
 
             document.querySelector('input').value = path.slice(1) || defaultt;
-            document.querySelector('input').addEventListener('keyup', event => {
+            document.querySelector('input').addEventListener('input', event => {
                 displaySlug(event.target.value);
             });
 
