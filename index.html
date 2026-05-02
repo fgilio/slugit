@@ -39,6 +39,7 @@
             <input type="text" aria-label="String to slugify" autocapitalize="off" autocorrect="off" spellcheck="false" />
             <br>
             <h1 title="Click to copy to clipboard"></h1>
+            <span class="copied" role="status" aria-live="polite"></span>
 
             <ul>
                 <li>
@@ -152,6 +153,22 @@
             h1::selection {
                 background-color: transparent;
             }
+            .copied {
+                font-family: monospace;
+                font-size: 14px;
+                color: #495254;
+                margin-left: 8px;
+                opacity: 0;
+                transition: opacity 200ms ease-out;
+            }
+            .copied.is-shown {
+                opacity: 0.7;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .copied {
+                    transition: none;
+                }
+            }
 
             ul {
                 list-style: none;
@@ -200,8 +217,17 @@
                 el.style.left = '-9999px';
                 document.body.appendChild(el);
                 el.select();
-                document.execCommand('copy');
+                const ok = document.execCommand('copy');
                 document.body.removeChild(el);
+                return ok;
+            };
+            let copiedTimer;
+            const announceCopied = () => {
+                const el = document.querySelector('.copied');
+                el.textContent = 'Copied!';
+                el.classList.add('is-shown');
+                clearTimeout(copiedTimer);
+                copiedTimer = setTimeout(() => el.classList.remove('is-shown'), 1200);
             };
             /*
              * decodeURI doesn't cut it because we may have actual % in the path.
@@ -334,7 +360,9 @@
                 displaySlug(event.target.value);
             });
 
-            document.querySelector('h1').addEventListener('click', e => copyToClipboard(e.target.textContent));
+            document.querySelector('h1').addEventListener('click', e => {
+                if (copyToClipboard(e.target.textContent)) announceCopied();
+            });
         </script>
 
         <script>
