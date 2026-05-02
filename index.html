@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
         <link rel="manifest" href="/manifest.webmanifest" />
@@ -36,9 +36,10 @@
     <body>
         <main>
             <p></p>
-            <input type="text" />
+            <input type="text" aria-label="String to slugify" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="...or write here" />
             <br>
             <h1 title="Click to copy to clipboard"></h1>
+            <span class="copied" role="status" aria-live="polite"></span>
 
             <ul>
                 <li>
@@ -152,6 +153,22 @@
             h1::selection {
                 background-color: transparent;
             }
+            .copied {
+                font-family: monospace;
+                font-size: 14px;
+                color: #495254;
+                margin-left: 8px;
+                opacity: 0;
+                transition: opacity 200ms ease-out;
+            }
+            .copied.is-shown {
+                opacity: 0.7;
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .copied {
+                    transition: none;
+                }
+            }
 
             ul {
                 list-style: none;
@@ -200,8 +217,17 @@
                 el.style.left = '-9999px';
                 document.body.appendChild(el);
                 el.select();
-                document.execCommand('copy');
+                const ok = document.execCommand('copy');
                 document.body.removeChild(el);
+                return ok;
+            };
+            let copiedTimer;
+            const announceCopied = () => {
+                const el = document.querySelector('.copied');
+                el.textContent = 'Copied!';
+                el.classList.add('is-shown');
+                clearTimeout(copiedTimer);
+                copiedTimer = setTimeout(() => el.classList.remove('is-shown'), 1200);
             };
             /*
              * decodeURI doesn't cut it because we may have actual % in the path.
@@ -312,7 +338,7 @@
                     console.error('Parameter `url` must contain valid UTF-8 character sequences');
                 }
                 document.querySelector('h1').textContent = pathSlug;
-                document.querySelector('title').textContent = pathSlug + '  - slugit';
+                document.querySelector('title').textContent = pathSlug + ' - slugit';
             };
             /*
              * We receive the path as an URL encoded string.
@@ -329,12 +355,14 @@
             const path = decodePath(pathname);
             displaySlug(path !== '/' ? path : defaultt);
 
-            document.querySelector('input').value = path.slice(1) || defaultt;
-            document.querySelector('input').addEventListener('keyup', event => {
+            document.querySelector('input').value = path.slice(1);
+            document.querySelector('input').addEventListener('input', event => {
                 displaySlug(event.target.value);
             });
 
-            document.querySelector('h1').addEventListener('click', e => copyToClipboard(e.target.textContent));
+            document.querySelector('h1').addEventListener('click', e => {
+                if (copyToClipboard(e.target.textContent)) announceCopied();
+            });
         </script>
 
         <script>

@@ -16,7 +16,7 @@ The `slugify` function is duplicated in both `index.html` and `api/index.js` - k
 
 ## Development
 
-No local dev server configured - deploy to Vercel or serve files statically. The `now.json` configures Vercel deployment with routing.
+No local dev server configured - deploy to Vercel or serve files statically. The `vercel.json` configures Vercel deployment with routing.
 
 ## Deployment
 
@@ -32,4 +32,4 @@ vercel --prod   # Production deployment
 - `index.html` - Entire frontend (HTML, CSS, JS inline)
 - `api/index.js` - Serverless slug API endpoint
 - `service-worker.js` - PWA caching (update `staticAssetsCacheName` version when changing cached assets)
-- `now.json` - Vercel config and routing
+- `vercel.json` - Vercel config and routing
